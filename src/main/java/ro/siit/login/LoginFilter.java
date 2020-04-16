@@ -14,7 +14,7 @@ public class LoginFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        Object authenticated = httpServletRequest.getSession().getAttribute("authenticated");
+        Object authenticated = httpServletRequest.getSession().getAttribute("authenticatedUser");
         if(authenticated != null) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {

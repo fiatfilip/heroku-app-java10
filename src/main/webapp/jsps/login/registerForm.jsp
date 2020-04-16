@@ -17,21 +17,25 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+        <script type="text/javascript" src="resources/js/register.js"></script>
         <title>Hello, world!</title>
     </head>
     <body>
         <div class="container">
             <div class="row">
                 <div class="offset-md-3 col-md-6">
-                    <h2>Login first!</h2>
+                    <h2>Register first!</h2>
                 </div>
             </div>
             <div class="row">
                 <div class="offset-md-3 col-md-6">
-                    <form method="post">
-                        <div class="alert alert-danger" style="display: <c:out value="${requestScope.display}"/>">
+                    <form method="post" name="registerForm">
+                        <div class="alert alert-danger" style="display: <c:out value="${requestScope.displayError}"/>" id="errors">
                             <c:out value="${requestScope.error}"/>
+                        </div>
+                        <div class="alert alert-success" style="display: <c:out value="${requestScope.displaySuccess}"/>" id="success">
+                            <c:out value="${requestScope.success}"/>
+                            <a href="login">Login here</a>
                         </div>
                         <div class="form-group">
                             <label for="username">Username</label>
@@ -41,7 +45,11 @@
                             <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password">
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <div class="form-group">
+                            <label for="passwordConfirm">Password Confirm</label>
+                            <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
+                        </div>
+                        <button type="button" class="btn btn-primary" onClick="validateForm();">Register</button>
                     </form>
                 </div>
             </div>

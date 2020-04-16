@@ -1,6 +1,9 @@
 package ro.siit.login;
 
 
+import ro.siit.model.User;
+import ro.siit.service.UserService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,15 +14,16 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
-    private CredentialsValidator credentialsValidator;
+    private UserService userService;
     @Override
     public void init() throws ServletException {
         super.init();
-        credentialsValidator = new CredentialsValidator();
+        userService = new UserService();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("display", "none");
         req.getRequestDispatcher("/jsps/login/loginForm.jsp").forward(req, resp);
     }
 
@@ -28,11 +32,13 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String pwd = req.getParameter("password");
 
-        if(credentialsValidator.checkCredentials(username, pwd)){
-            req.getSession().setAttribute("authenticated", true);
+        User authenticatedUser = userService.checkCredentials(username, pwd);
+        if(authenticatedUser != null){
+            req.getSession().setAttribute("authenticatedUser", authenticatedUser);
             resp.sendRedirect(req.getContextPath() + "/entity");
         } else {
             req.setAttribute("error", "Username/password combination incorrect");
+            req.setAttribute("display", "block");
             req.getRequestDispatcher("/jsps/login/loginForm.jsp").forward(req, resp);
         }
 
