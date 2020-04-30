@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
-@WebServlet(urlPatterns = {"/register"})
+@WebServlet(urlPatterns = {"/json/register", "/register"})
 public class RegisterServlet extends HttpServlet {
 
     private UserService userService;
@@ -25,15 +25,18 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
+        action = (action != null) ? action: "display-form";
 
         if(action.equals("validate-username")){
             String username = req.getParameter("username");
             boolean exists = userService.usernameExists(username);
             resp.setContentType("application/json");
-            resp.getWriter().println("{exists: "+ exists + "}");
+            resp.getWriter().println("{\"exists\": \"" + exists + "\"}");
         } else {
             req.setAttribute("displayError", "none");
             req.setAttribute("displaySuccess", "none");
+            req.setAttribute("registerActive", "active");
+            req.setAttribute("visibleLoggedIn", "hidden");
             req.getRequestDispatcher("/jsps/login/registerForm.jsp").forward(req, resp);
         }
     }
@@ -55,6 +58,8 @@ public class RegisterServlet extends HttpServlet {
             req.setAttribute("displaySuccess", "none");
             req.setAttribute("error", "Username already used");
         }
+        req.setAttribute("registerActive", "active");
+        req.setAttribute("visibleLoggedIn", "hidden");
         req.getRequestDispatcher("/jsps/login/registerForm.jsp").forward(req, resp);
 
     }

@@ -13,8 +13,8 @@ import java.io.IOException;
 public class EntityServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        User authenticatedUser = (User)(req.getSession().getAttribute("authenticatedUser"));
-        resp.getWriter().println("{authenticatedUser: "+ authenticatedUser.getUsername() + "}");
+        req.setAttribute("hiddenLoggedIn", "hidden");
+        req.setAttribute("entityActive", "active");
+        req.getRequestDispatcher("/jsps/entity_list.jsp").forward(req, resp);
     }
 }

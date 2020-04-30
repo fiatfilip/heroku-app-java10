@@ -24,6 +24,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("display", "none");
+        req.setAttribute("loginActive", "active");
+        req.setAttribute("visibleLoggedIn", "hidden");
         req.getRequestDispatcher("/jsps/login/loginForm.jsp").forward(req, resp);
     }
 
@@ -39,6 +41,8 @@ public class LoginServlet extends HttpServlet {
         } else {
             req.setAttribute("error", "Username/password combination incorrect");
             req.setAttribute("display", "block");
+            req.setAttribute("loginActive", "active");
+            req.setAttribute("visibleLoggedIn", "hidden");
             req.getRequestDispatcher("/jsps/login/loginForm.jsp").forward(req, resp);
         }
 
